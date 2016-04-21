@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">DespensApp</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_mi_nevera">Mi Nevera</string>
+    <string name="title_activity_mi_despensa">Mi Despensa</string>
+    <string name="title_activity_listas_compra">Listas de Compra</string>
+    <string name="title_activity_add_articulos_lista">AddArticulosLista</string>
+    <string name="title_activity_add_articulo_lista">AddArticuloLista</string>
+    <string name="title_activity_gasto_anual">GastoAnual</string>
+    <string name="title_activity_gasto_mensual">GastoMensual</string>
+    <string name="title_activity_productos_consumidos">ProductosConsumidos</string>
+</resources>

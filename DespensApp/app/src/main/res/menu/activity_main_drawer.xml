@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_despensa"
+            android:icon="@drawable/ic_action_image_gradient"
+            android:title="Mi Despensa" />
+        <item
+            android:id="@+id/nav_nevera"
+            android:icon="@drawable/ic_action_image_flip"
+            android:title="Mi Nevera" />
+        <item
+            android:id="@+id/nav_listascompra"
+            android:icon="@drawable/ic_action_action_toc"
+            android:title="Listas de Compra" />
+        <item
+            android:id="@+id/nav_estadisticas"
+            android:icon="@drawable/ic_action_action_trending_up"
+            android:title="Estadísticas" />
+        <item
+            android:id="@+id/nav_manualUsuario"
+            android:icon="@drawable/ic_action_action_settings"
+            android:title="Manual de Usuario" />
+    </group>
+
+    <!--<item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>-->
+
+</menu>

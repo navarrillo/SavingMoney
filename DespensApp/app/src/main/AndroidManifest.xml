@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.despensapp">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/logoo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".ArticuloDespensa"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="despensapp.articuloDespensa" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ArticuloNevera"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="despensapp.articuloNevera" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="DespensApp"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".MiNevera"
+            android:label="@string/title_activity_mi_nevera"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MiDespensa"
+            android:label="@string/title_activity_mi_despensa"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ListasCompra"
+            android:label="@string/title_activity_listas_compra"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Estadisticas" />
+        <activity android:name=".EditarLista" />
+        <activity android:name=".CrearLista" />
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".ArticulosLista"
+            android:label="@string/title_activity_add_articulos_lista"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddArticuloLista"
+            android:label="@string/title_activity_add_articulo_lista"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GastoAnual"
+            android:label="@string/title_activity_gasto_anual"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GastoMensual"
+            android:label="@string/title_activity_gasto_mensual"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ProductosComprados"
+            android:label="@string/title_activity_productos_consumidos"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>
