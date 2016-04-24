@@ -12,6 +12,8 @@ import android.content.Context;
 public class DespenDBOpenHelper extends SQLiteOpenHelper {
 
     //sentencias para crear tablas para la base de datos
+   // final String k_ini = "CREATE TABLE INI(listas number(1), arts number(1), CONSTRAINT PK_INI PRIMARY KEY(listas))";
+   // final String ini = "INSERT INTO INI VALUES (0,0)";
     final String  k_articulo = "CREATE TABLE ARTICULO(id integer," +
                                                 "nombre varchar(50) ," +
                                                 "precio number(6,2) ," +
@@ -39,6 +41,8 @@ public class DespenDBOpenHelper extends SQLiteOpenHelper {
         try {
             bd.execSQL(k_articulo);
             bd.execSQL(k_lista);
+           // bd.execSQL((k_ini));
+           // bd.execSQL(ini);
         }
         catch (Exception e){
             System.out.println(e.toString());
@@ -47,7 +51,15 @@ public class DespenDBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase bd,int anteriorversion,int nuevaversion){
-        //ACTUALIZAR BD
+        try {
+            if (anteriorversion < 2) {
+                String cadena = "ALTER TABLE ARTICULO ADD fechaArt Date;";
+                bd.execSQL((cadena));
+            }
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+
     }
 
 }
