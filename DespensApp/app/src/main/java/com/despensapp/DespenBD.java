@@ -27,16 +27,15 @@ public class DespenBD {
 
     public DespenBD(Context contexto){
 
-        doh = new DespenDBOpenHelper(contexto,"despenBD",null,2);
+        doh = new DespenDBOpenHelper(contexto,"despenBD",null,1);
         articulos = new ArrayList<>();
         listas = new ArrayList<>();
 
         //llamada a los métodos que rellenarán la bd
 
-        //clearAllBD(); //limpia la base de datos
         this.getListasBD();
         this.getArticulosBD();
-
+        clearAllBD(); //limpia la base de datos
         iniciaValores(listasIniciales(), articulosIniciales());//inicia los valores
 
 
@@ -94,54 +93,48 @@ public class DespenBD {
                 return;
             }
             else{
-                //if(!this.leerIni(0)) {
-                    for (String lista : listas) {
-                        String nombre = lista.split(" ")[0];
-                        String fecha = lista.split(" ")[1];
-                        bd.execSQL("INSERT INTO LISTACOMPRA(nombre,fecha,visible) VALUES ('" + nombre + "','" + fecha + "','true')");
-                        this.listas.add(new ENListaCompra(nombre, fecha));
+                for(String lista: listas){
+                    String nombre =lista.split(" ")[0];
+                    String fecha = lista.split(" ")[1];
+                    bd.execSQL("INSERT INTO LISTACOMPRA(nombre,fecha,visible) VALUES ('" + nombre + "','" + fecha + "','true')");
+                    this.listas.add(new ENListaCompra(nombre, fecha));
+                }
+
+                for(String arti: articulos){
+
+                    String lisn,feli,nombre,estado;
+                    int length = arti.split(" ").length;
+                    nombre = arti.split(" ")[0];
+                    Float precio = Float.valueOf(arti.split(" ")[1]);
+                    int cantdad = Integer.valueOf(arti.split(" ")[2]);
+                    estado = arti.split(" ")[3];
+                    ENArticulo art = new ENArticulo(nombre,precio,cantdad,estado,fechaActual);
+
+                    if(length>4){
+                        lisn = arti.split(" ")[4];
+                        feli = arti.split(" ")[5];
+
+                        bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
+                                art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "','" +
+                                lisn + "','" + feli + "')");
+
+                        this.listas.get(findLista(lisn,feli)).add(art);
 
                     }
-                //    cambiarIni(0);
-               // }
-               // if(!this.leerIni(1)) {
-                    for (String arti : articulos) {
-
-                        String lisn, feli, nombre, estado;
-                        int length = arti.split(" ").length;
-                        nombre = arti.split(" ")[0];
-                        Float precio = Float.valueOf(arti.split(" ")[1]);
-                        int cantdad = Integer.valueOf(arti.split(" ")[2]);
-                        estado = arti.split(" ")[3];
-                        ENArticulo art = new ENArticulo(nombre, precio, cantdad, estado, fechaActual);
-
-                        if (length > 4) {
-                            lisn = arti.split(" ")[4];
-                            feli = arti.split(" ")[5];
-
-                            bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
-                                    art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.getEstado() + "','" +
-                                    lisn + "','" + feli + "' , '" + art.getFechaArt() + "')");
-
-                            this.listas.get(findLista(lisn, feli)).add(art);
-
-                        } else {
-                            bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
-                                    art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.getEstado() + "', NULL, NULL,'" + art.getFechaArt() + "')");
-                            this.articulos.add(art);
-
-                        }
-
-                        //bd.close();
+                    else{
+                        bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
+                                art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL)");
+                        this.articulos.add(art);
 
                     }
-                //    cambiarIni(1);
-                //}
+                    //bd.close();
+
+                }
                 doh.close();
             }
         }
         catch (Exception e){
-            System.out.println(e.getMessage() + "\n Error al iniciar datos en la BD (inicia valores)");
+            System.out.println(e.toString() + "\n Error al iniciar datos en la BD (inicia valores)");
             doh.close();
         }
 
@@ -167,7 +160,7 @@ public class DespenBD {
                 return;
             } else {
                 bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
-                        art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL, '" + art.fechaArt + "')");
+                        art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL)");
 
                 doh.close();
                 articulos.add(art);
@@ -175,7 +168,7 @@ public class DespenBD {
             }
         } catch (Exception e) {
             ENArticulo.setNumArticulos(ENArticulo.getNumArticulos() - 1);
-            System.out.println("jhjhhkhjhhjhkhkkkhkhkh " + e.getMessage());
+            System.out.println(" El articulo ya existe en la bd");
 
         }
     }
@@ -201,7 +194,7 @@ public class DespenBD {
             else{
                 bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
                         art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "','" +
-                        lista + "','" + fecha + "','" + fechaActual + "')");
+                        lista + "','" + fecha + "')");
 
                 doh.close();
                 listas.get(findLista(nombre,fecha)).add(art);
@@ -729,74 +722,4 @@ public class DespenBD {
         if(ordenado && tam <= 12) return articuloss;
         else return ordenaArti(articuloss);
     }
-    //metodo para modificar estado de un articulo //nvi para borrar //des //nev
-    public static void modificarEstadoArticulo(String nombre,String estado){
-
-            SQLiteDatabase bd = doh.getWritableDatabase();
-
-            try{
-                if(bd == null){
-                    return;
-                }
-                else{
-                    ENArticulo art = findArtByName(nombre);
-                    bd.execSQL("UPDATE  ARTICULO SET estado = '" + estado + "' WHERE id = '" +
-                            art.getId() + "'");
-
-                    art.setEstado("nvi");
-
-                    doh.close();
-                }
-            }
-            catch (Exception e){
-                System.out.println(e.toString() + "\n Fallo en el acceso a la BD");
-            }
-
-        }
-
-
-
-    /*
-    private static void cambiarIni(int algo) {
-        SQLiteDatabase bd = doh.getWritableDatabase();
-
-        try {
-            if (bd == null) {
-                return;
-            } else {
-                if (algo == 0)
-                    bd.execSQL("UPDATE  INI SET listas =  1 ");
-
-                else
-                    bd.execSQL("UPDATE  INI SET arts =  1 ");
-
-
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + " cambiarIni");
-        }
-    }
-        private Boolean leerIni(int algo) {
-
-            String consulta;
-            try {
-
-                if(algo == 0)  consulta = "SELECT listas FROM INI";
-                else  consulta = "SELECT arts FROM INI";
-                Cursor c = doh.getReadableDatabase().rawQuery(consulta, null);
-                while (c.moveToNext()) {
-                    if(c.getInt(0) == 0) return false;
-                    else  return true;
-
-                }
-
-
-            } catch (Exception e) {
-                System.out.println(e.getMessage() + "leerIni");
-                doh.close();
-                return false;
-            }
-            return  false;
-        }
-*/
 }
