@@ -27,15 +27,16 @@ public class DespenBD {
 
     public DespenBD(Context contexto){
 
-        doh = new DespenDBOpenHelper(contexto,"despenBD",null,1);
+        doh = new DespenDBOpenHelper(contexto,"despenBD",null,2);
         articulos = new ArrayList<>();
         listas = new ArrayList<>();
 
         //llamada a los métodos que rellenarán la bd
 
+        //clearAllBD(); //limpia la base de datos
         this.getListasBD();
         this.getArticulosBD();
-        clearAllBD(); //limpia la base de datos
+
         iniciaValores(listasIniciales(), articulosIniciales());//inicia los valores
 
 
@@ -116,14 +117,14 @@ public class DespenBD {
 
                         bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
                                 art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "','" +
-                                lisn + "','" + feli + "')");
+                                lisn + "','" + feli + "' , '" + art.getFechaArt() + "')");
 
                         this.listas.get(findLista(lisn,feli)).add(art);
 
                     }
                     else{
                         bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
-                                art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL)");
+                                art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL, '" + art.getFechaArt() + "')");
                         this.articulos.add(art);
 
                     }
@@ -134,7 +135,7 @@ public class DespenBD {
             }
         }
         catch (Exception e){
-            System.out.println(e.toString() + "\n Error al iniciar datos en la BD (inicia valores)");
+            System.out.println(e.getMessage() + "\n Error al iniciar datos en la BD (inicia valores)");
             doh.close();
         }
 
@@ -160,7 +161,7 @@ public class DespenBD {
                 return;
             } else {
                 bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
-                        art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL)");
+                        art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL,  '" + art.fechaArt + "')");
 
                 doh.close();
                 articulos.add(art);
@@ -168,7 +169,7 @@ public class DespenBD {
             }
         } catch (Exception e) {
             ENArticulo.setNumArticulos(ENArticulo.getNumArticulos() - 1);
-            System.out.println(" El articulo ya existe en la bd");
+            System.out.println(e.getMessage() + " insertArticulo");
 
         }
     }
@@ -194,7 +195,7 @@ public class DespenBD {
             else{
                 bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
                         art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "','" +
-                        lista + "','" + fecha + "')");
+                        lista + "','" + fecha + "' , '" + fechaActual + "')");
 
                 doh.close();
                 listas.get(findLista(nombre,fecha)).add(art);
@@ -207,15 +208,7 @@ public class DespenBD {
         }
 
     }
-    /*        id integer," +
-            "nombre varchar(50) ," +
-            "precio number(6,2) ," +
-            "cantidadActual integer," +
-            "cantidadComprada integer  ," +
-            "estado varchar(3) ," +
-            "nombreLista varchar(50) ," +
-            "fecha DATE ,"
-    */
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // metodo privado para obtener datos de la bd
@@ -628,7 +621,7 @@ public class DespenBD {
     //devuelve un articulo por nombre
     public static ENArticulo findArtByName(String nombre){
 
-        for( ENArticulo art : articulos){
+        for( ENArticulo art : articulos) {
             if(art.getNombre().equals(nombre)) return art;
         }
 
@@ -721,5 +714,29 @@ public class DespenBD {
 
         if(ordenado && tam <= 12) return articuloss;
         else return ordenaArti(articuloss);
+    }
+
+    public static void modificarEstadoArticulo(String nombre,String estado){
+
+        SQLiteDatabase bd = doh.getWritableDatabase();
+
+        try{
+            if(bd == null){
+                return;
+            }
+            else{
+                ENArticulo art = findArtByName(nombre);
+                bd.execSQL("UPDATE  ARTICULO SET estado = '" + estado + "' WHERE id = '" +
+                        art.getId() + "'");
+
+                art.setEstado("nvi");
+
+                doh.close();
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.toString() + "\n Fallo en el acceso a la BD");
+        }
+
     }
 }
