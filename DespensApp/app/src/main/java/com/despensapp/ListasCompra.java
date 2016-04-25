@@ -47,8 +47,26 @@ public class ListasCompra extends AppCompatActivity implements AdapterView.OnIte
 
             // bundle = getIntent().getExtras();
 
+
         listasCompra = (ListView) findViewById(R.id.lv_listasCompra);
+
         listasCompra.setOnItemLongClickListener(this);
+
+        listasCompra.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final String text = listasCompra.getItemAtPosition(position).toString();// second method
+
+                Intent myIntent = new Intent(view.getContext(), ArticulosLista.class);
+                myIntent.putExtra("key", text);
+                System.out.println("------------------" + text);
+                startActivity(myIntent);
+            }
+        });
+
+
+
        // misListas = new ArrayList<MisListas>();
         misListas = new ArrayList <ENListaCompra>();
             /*if(bundle == null) {
