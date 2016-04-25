@@ -81,7 +81,9 @@ public class MiDespensa extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onBackPressed() {
         Intent i = new Intent(this, MainActivity.class);
+
         startActivity(i);
+        finish();
     }
 
     private class MyListAdapter extends ArrayAdapter<ENArticulo> {
