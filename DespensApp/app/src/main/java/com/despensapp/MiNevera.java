@@ -78,6 +78,7 @@ public class MiNevera extends AppCompatActivity implements View.OnClickListener 
     public void onBackPressed() {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
+        finish();
     }
 
     private class MyListAdapter extends ArrayAdapter<ENArticulo> {
