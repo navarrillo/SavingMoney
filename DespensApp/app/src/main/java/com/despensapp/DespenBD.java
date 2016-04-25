@@ -27,15 +27,16 @@ public class DespenBD {
 
     public DespenBD(Context contexto){
 
-        doh = new DespenDBOpenHelper(contexto,"despenBD",null,1);
+        doh = new DespenDBOpenHelper(contexto,"despenBD",null,2);
         articulos = new ArrayList<>();
         listas = new ArrayList<>();
 
         //llamada a los métodos que rellenarán la bd
 
+        clearAllBD(); //limpia la base de datos
         this.getListasBD();
         this.getArticulosBD();
-        clearAllBD(); //limpia la base de datos
+
         iniciaValores(listasIniciales(), articulosIniciales());//inicia los valores
 
 
@@ -47,8 +48,22 @@ public class DespenBD {
 
     private ArrayList<String> articulosIniciales(){
         //para insertar articulos (nombre, precio,estado (esp,des,nev,nvi(no visible), nomlista, fecha) y && para separar
-        String articulos = "Salchipapa 5 2 esp && langostinos 10 1 nev Navidad 22/12/2015 && ternera 7.2 1 nev Carniceria 20/11/2015" +
-                " && Galletas 1 4 des ";//&&  Cereales 1.6 1 des && Aceite 3.2 4 des && Zumo 1.5 6 des && Tomate 0.50 1 des";
+        String articulos = "Salchipapa 5 2 esp && " +
+                "langostinos 10 1 nev Navidad 22/12/2015 && " +
+                "ternera 7.2 1 nev Carniceria 20/11/2015 && " +
+                "Galletas 1 4 des Supermercado 03/12/2014 && " +
+                "Cereales 1.6 1 des Supermercado 03/12/2014 && " +
+                "Aceite 3.2 4 des Supermercado 03/12/2014 && " +
+                "Zumo 1.5 6 des Supermercado 03/12/2014 && " +
+                "Uvas 3.8 4 nev Navidad 22/12/2015 && " +
+                "Chuletón 12.2 4 nev Navidad 22/12/2015 && " + //
+                "LataConserva 0.8 4 des Supermercado 03/12/2014 && " +
+                "QuesoCurado 6.2 1 nev Carniceria 20/11/2015 && " +
+                "HeladoFresa 4 2 nev Supermercado 03/12/2014 && " +
+                "Cava 1.8 2 nev Navidad 22/12/2015 && " +
+                "Aceitunas 0.7 1 des Navidad 22/12/2015 && " +
+                "Chorizo 4.9 2 nev Carniceria 20/11/2015";
+
 
         ArrayList<String> articuloos = new ArrayList<>();
 
@@ -65,7 +80,7 @@ public class DespenBD {
     private ArrayList<String> listasIniciales(){
 
         //para añadir nuevas listas modifica el string cadena y separa con " && "
-        String cadena = "BulgariSuper 03/12/2014  && Carniceria 20/11/2015 && Navidad 22/12/2015";
+        String cadena = "Supermercado 03/12/2014  && Carniceria 20/11/2015 && Navidad 22/12/2015";
         ArrayList<String> cadenas = new ArrayList<>();
 
         for(String lista: cadena.split(" && ")){
@@ -116,14 +131,14 @@ public class DespenBD {
 
                         bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
                                 art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "','" +
-                                lisn + "','" + feli + "')");
+                                lisn + "','" + feli + "' , '" + art.getFechaArt() + "')");
 
                         this.listas.get(findLista(lisn,feli)).add(art);
 
                     }
                     else{
                         bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
-                                art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL)");
+                                art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL, '" + art.getFechaArt() + "')");
                         this.articulos.add(art);
 
                     }
@@ -134,7 +149,7 @@ public class DespenBD {
             }
         }
         catch (Exception e){
-            System.out.println(e.toString() + "\n Error al iniciar datos en la BD (inicia valores)");
+            System.out.println(e.getMessage() + "\n Error al iniciar datos en la BD (inicia valores)");
             doh.close();
         }
 
@@ -160,7 +175,7 @@ public class DespenBD {
                 return;
             } else {
                 bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
-                        art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL)");
+                        art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "', NULL, NULL,  '" + art.fechaArt + "')");
 
                 doh.close();
                 articulos.add(art);
@@ -168,7 +183,7 @@ public class DespenBD {
             }
         } catch (Exception e) {
             ENArticulo.setNumArticulos(ENArticulo.getNumArticulos() - 1);
-            System.out.println(" El articulo ya existe en la bd");
+            System.out.println(e.getMessage() + " insertArticulo");
 
         }
     }
@@ -194,7 +209,7 @@ public class DespenBD {
             else{
                 bd.execSQL("INSERT INTO ARTICULO VALUES (" + art.getId() + ",'" + art.getNombre() + "','" + art.getPrecio() + "','" +
                         art.getCantidadActual() + "','" + art.getCantidadComnprada() + "','" + art.estado + "','" +
-                        lista + "','" + fecha + "')");
+                        lista + "','" + fecha + "' , '" + fechaActual + "')");
 
                 doh.close();
                 listas.get(findLista(nombre,fecha)).add(art);
@@ -207,15 +222,7 @@ public class DespenBD {
         }
 
     }
-    /*        id integer," +
-            "nombre varchar(50) ," +
-            "precio number(6,2) ," +
-            "cantidadActual integer," +
-            "cantidadComprada integer  ," +
-            "estado varchar(3) ," +
-            "nombreLista varchar(50) ," +
-            "fecha DATE ,"
-    */
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // metodo privado para obtener datos de la bd
@@ -628,7 +635,7 @@ public class DespenBD {
     //devuelve un articulo por nombre
     public static ENArticulo findArtByName(String nombre){
 
-        for( ENArticulo art : articulos){
+        for( ENArticulo art : articulos) {
             if(art.getNombre().equals(nombre)) return art;
         }
 
@@ -721,5 +728,29 @@ public class DespenBD {
 
         if(ordenado && tam <= 12) return articuloss;
         else return ordenaArti(articuloss);
+    }
+
+    public static void modificarEstadoArticulo(String nombre,String estado){
+
+        SQLiteDatabase bd = doh.getWritableDatabase();
+
+        try{
+            if(bd == null){
+                return;
+            }
+            else{
+                ENArticulo art = findArtByName(nombre);
+                bd.execSQL("UPDATE  ARTICULO SET estado = '" + estado + "' WHERE id = '" +
+                        art.getId() + "'");
+
+                art.setEstado("nvi");
+
+                doh.close();
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.toString() + "\n Fallo en el acceso a la BD");
+        }
+
     }
 }

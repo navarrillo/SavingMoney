@@ -47,7 +47,14 @@ public class DespenDBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase bd,int anteriorversion,int nuevaversion){
-        //ACTUALIZAR BD
+        try {
+            if (anteriorversion < 2) {
+                String cadena = "ALTER TABLE ARTICULO ADD fechaArt Date;";
+                bd.execSQL((cadena));
+            }
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
     }
 
 }
