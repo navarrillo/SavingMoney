@@ -1,5 +1,6 @@
 package com.despensapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -106,8 +107,13 @@ public class MiDespensa extends AppCompatActivity implements View.OnClickListene
                 viewHowder.masArticulo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(),"Aumentar cantidad", Toast.LENGTH_SHORT).show();
-
+                        DespenBD.aumDisArticulo(getItem(position).getNombre(), true);
+                        Intent intent = getIntent();
+                        overridePendingTransition(0,0);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        finish();
+                        overridePendingTransition(0,0);
+                        startActivity(intent);
                     }
                 });
 
@@ -115,7 +121,13 @@ public class MiDespensa extends AppCompatActivity implements View.OnClickListene
                 viewHowder.menosArticulo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(),"Disminuir cantidad", Toast.LENGTH_SHORT).show();
+                        DespenBD.aumDisArticulo(getItem(position).getNombre(), false);
+                        Intent intent = getIntent();
+                        overridePendingTransition(0,0);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        finish();
+                        overridePendingTransition(0,0);
+                        startActivity(intent);
                     }
                 });
 
