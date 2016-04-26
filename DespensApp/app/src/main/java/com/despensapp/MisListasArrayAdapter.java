@@ -1,6 +1,7 @@
 package com.despensapp;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class MisListasArrayAdapter<T> extends ArrayAdapter<T> {
 
-    public MisListasArrayAdapter(Context context, List<T> objects) {
+    public MisListasArrayAdapter(Context context,@LayoutRes int res, List<T> objects) {
         super(context, 0, objects);
     }
 
@@ -36,7 +37,7 @@ public class MisListasArrayAdapter<T> extends ArrayAdapter<T> {
         if (null == convertView) {
             //Si no existe, entonces inflarlo con two_line_list_item.xml
             listItemView = inflater.inflate(
-                    android.R.layout.two_line_list_item,
+                    R.layout.items_mis_listas,
                     parent,
                     false);
         }
@@ -47,8 +48,8 @@ public class MisListasArrayAdapter<T> extends ArrayAdapter<T> {
 
 
 
-        TextView nombre = (TextView) listItemView.findViewById(android.R.id.text1);
-        TextView fecha = (TextView) listItemView.findViewById(android.R.id.text2);
+        TextView nombre = (TextView) listItemView.findViewById(R.id.nombre_item_mis_lista);
+        TextView fecha = (TextView) listItemView.findViewById(R.id.fecha_item_mis_lista);
         //ImageView categoria = (ImageView) listItemView.findViewById(R.id.categoria);
 
         //Obteniendo instancia de la Tarea en la posición actual
@@ -77,5 +78,11 @@ public class MisListasArrayAdapter<T> extends ArrayAdapter<T> {
     }
 
 }
+
+
+
+
+
+
 
 

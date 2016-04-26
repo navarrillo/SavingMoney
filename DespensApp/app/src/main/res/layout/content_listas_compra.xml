@@ -18,6 +18,7 @@
         android:id="@+id/lv_listasCompra"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:clickable="true"
         android:layout_alignParentTop="true" />
 
 
