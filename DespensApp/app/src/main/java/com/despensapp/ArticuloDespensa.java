@@ -34,6 +34,7 @@ public class ArticuloDespensa extends Activity implements View.OnClickListener {
         cantidadArticulo = (EditText) findViewById(R.id.et_cantidadArticuloDespensa);
 
 
+
     }
 
     public void crearArticuloDespensa(){

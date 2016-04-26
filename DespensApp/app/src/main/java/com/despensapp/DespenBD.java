@@ -253,6 +253,8 @@ public class DespenBD {
     // metodo privado para obtener datos de la bd
     ///////////////////////////////////////////////////////////////////////////////////////////
 
+
+
     private void getArticulosBD(){
 
         try{
@@ -293,6 +295,36 @@ public class DespenBD {
         return articulos;
     }
 
+
+    public static ArrayList<ENArticulo> getArticulosTodos(){
+
+        ArrayList<ENArticulo> artic = new ArrayList<>();
+        artic=articulos;
+        for(ENArticulo art: articulos){
+            if(art.getEstado().equals("des")) artic.add(art);
+        }
+
+        for(ENListaCompra lis : listas){
+            for(ENArticulo art: lis.getArticulos()){
+                if(art.getEstado().equals("des")) artic.add(art);
+            }
+        }
+
+        for(ENArticulo art: articulos){
+            if(art.getEstado().equals("nev")) artic.add(art);
+        }
+
+        for(ENListaCompra lis : listas){
+            for(ENArticulo art: lis.getArticulos()){
+                if(art.getEstado().equals( "nev")) artic.add(art);
+            }
+        }
+
+        return artic;
+
+    }
+
+
     public static ArrayList<ENListaCompra> getListasVisibles() {
 
         ArrayList<ENListaCompra> miListasVisibles = new ArrayList<>();
@@ -305,6 +337,28 @@ public class DespenBD {
 
         return miListasVisibles;
     }
+
+    public static ArrayList<ENArticulo> getListaNomFecha(String nombre, String fecha){
+
+        ArrayList<ENArticulo> lista = new ArrayList<ENArticulo>();
+
+
+        ArrayList<ENListaCompra> miL = DespenBD.getListas();
+        for (ENListaCompra lc: miL) {
+
+            System.out.println(nombre+"---"+fecha);
+            System.out.println(lc.getNombre()+"---"+lc.getFecha());
+            if(lc.getNombre().equals(nombre) && lc.getFecha().equals(fecha)){
+                 lista=lc.getArticulos();
+            }
+        }
+
+
+
+        return lista;
+
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     //devuelve el número de articulos de la base de datos

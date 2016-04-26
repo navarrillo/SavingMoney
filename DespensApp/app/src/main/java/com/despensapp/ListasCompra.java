@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ListasCompra extends AppCompatActivity implements AdapterView.OnItemLongClickListener{
+public class ListasCompra extends AppCompatActivity implements AdapterView.OnItemLongClickListener,AdapterView.OnItemClickListener{
 
     ListView listasCompra;
     ArrayAdapter adaptador;
@@ -51,19 +51,7 @@ public class ListasCompra extends AppCompatActivity implements AdapterView.OnIte
         listasCompra = (ListView) findViewById(R.id.lv_listasCompra);
 
         listasCompra.setOnItemLongClickListener(this);
-
-        listasCompra.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                final String text = listasCompra.getItemAtPosition(position).toString();// second method
-
-                Intent myIntent = new Intent(view.getContext(), ArticulosLista.class);
-                myIntent.putExtra("key", text);
-                System.out.println("------------------" + text);
-                startActivity(myIntent);
-            }
-        });
+        listasCompra.setOnItemClickListener(this);
 
 
 
@@ -96,7 +84,8 @@ public class ListasCompra extends AppCompatActivity implements AdapterView.OnIte
         }
 
 
-        adaptador = new MisListasArrayAdapter<MisListas>(this, misListas);
+        adaptador = new MisListasArrayAdapter<MisListas>(this,R.layout.items_mis_listas, misListas);
+
         listasCompra.setAdapter(adaptador);
     }
 
@@ -183,5 +172,29 @@ public class ListasCompra extends AppCompatActivity implements AdapterView.OnIte
         /*String msg = "Elegiste "+id+" la tarea:\n"+listaActual.getNombre()+"-"+listaActual.getFecha();
         Toast.makeText(this,msg,Toast.LENGTH_LONG).show();*/
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, MainActivity.class);
+
+        startActivity(i);
+        finish();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        ENListaCompra list = (ENListaCompra) listasCompra.getItemAtPosition(position);
+        String text = list.getNombre();
+        String text2 = list.getFecha();
+
+        Intent myIntent = new Intent(this, ArticulosLista.class);
+        myIntent.putExtra("key", text);
+        myIntent.putExtra("key2", text2);
+
+        System.out.println("------------------" + text);
+        startActivity(myIntent);
+
     }
 }

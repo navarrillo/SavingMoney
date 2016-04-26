@@ -47,10 +47,12 @@ public class MiDespensa extends AppCompatActivity implements View.OnClickListene
         for (ENArticulo lista: miLista) {
             //DespenBD.ListaSetVisible(lc.getNombre(),lc.getFecha(),true);
 
-            listaArticulos.add(0, lista);
-            listItem.add(lista.getNombre());
-            listCantidad.add(lista.getCantidadActual());
+            if(lista.getCantidadActual()>0) {
 
+                listaArticulos.add(0, lista);
+                listItem.add(lista.getNombre());
+                listCantidad.add(lista.getCantidadActual());
+            }
             //misListas.add(lc);
             System.out.println("nombre: " + lista.getNombre() + "cantidad: " + lista.getCantidadActual());
         }
@@ -105,6 +107,7 @@ public class MiDespensa extends AppCompatActivity implements View.OnClickListene
                 ViewHowder viewHowder = new ViewHowder();
                 viewHowder.nombreArticulo = (TextView) convertView.findViewById(R.id.nombre_item_despensa);
                 viewHowder.cantidadArticulo = (TextView) convertView.findViewById(R.id.cantidad_item_despesa);
+                viewHowder.fechaArticulo = (TextView) convertView.findViewById(R.id.fecha_item_despensa);
                 viewHowder.masArticulo = (Button) convertView.findViewById(R.id.button_masItemDespensa);
                 viewHowder.masArticulo.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -140,6 +143,8 @@ public class MiDespensa extends AppCompatActivity implements View.OnClickListene
                 mainViewHolder = (ViewHowder) convertView.getTag();
                 mainViewHolder.nombreArticulo.setText(getItem(position).getNombre());
                 mainViewHolder.cantidadArticulo.setText(String.valueOf(getItem(position).getCantidadActual()));
+                mainViewHolder.fechaArticulo.setText(String.valueOf(getItem(position).getFechaArt()));
+
             }
 
             return convertView;
@@ -150,6 +155,7 @@ public class MiDespensa extends AppCompatActivity implements View.OnClickListene
 
         TextView nombreArticulo;
         TextView cantidadArticulo;
+        TextView fechaArticulo;
         Button masArticulo;
         Button menosArticulo;
     }
